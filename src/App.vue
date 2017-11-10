@@ -13,4 +13,5 @@ export default {
 <style lang="scss">
   @import './lib/scss/reset.scss';
   @import './lib/scss/base.scss';
+  @import './lib/scss/iconfont.scss';
 </style>
