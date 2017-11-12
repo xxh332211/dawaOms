@@ -2,16 +2,15 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/view/home'
 import Login from '@/view/login'
+import store from '../store'
 
 Vue.use(Router)
-
 const router = new Router({
   routes: [
     {
       path: '/',
       name: 'home',
       component: Home,
-      redirect: '/login',
       children: [
       ]
     },
@@ -23,9 +22,14 @@ const router = new Router({
     }
   ]
 })
+console.log(window.logcalStorage)
 router.beforeEach((to, from, next) => {
-  let xxh = 'true'
-  if (xxh === 'true') {
+  let islogin = store.getters.islogin
+  if (islogin === false && to.fullPath !== '/login') {
+    next({
+      path: '/login'
+    })
+  } else {
     next()
   }
 })

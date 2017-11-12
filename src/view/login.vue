@@ -5,12 +5,14 @@
           <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2"  class="demo-ruleForm">
             <div class="row">
               <el-form-item label="用户名" prop="pass">
-                <el-input type="text" placeholder="请输入用户名" v-model="ruleForm2.pass" auto-complete="off"></el-input>
+                <el-input type="text" placeholder="请输入用户名" v-model="user" auto-complete="off"></el-input>
               </el-form-item>
             </div>
-            <el-form-item label="密码" prop="checkPass">
+            <div class="row">
+              <el-form-item label="密码" prop="checkPass">
               <el-input type="password" placeholder="请输入密码" v-model="ruleForm2.checkPass" auto-complete="off"></el-input>
             </el-form-item>
+            </div>
             <div class="row">
               <el-col :span="18">
                 <el-form-item label="验证码" prop="age">
@@ -19,12 +21,12 @@
                 </el-form-item>
               </el-col>
               <el-col :span="6">
-                <div class="yanzhengma">
+                <div class="verification">
                   <img src="xxx" alt="">
                 </div>
               </el-col>
             </div>
-              <el-button type="primary" @click="submitForm('ruleForm2')" class="loginbtn">登陆</el-button>
+              <el-button type="primary" size="large" @click="gologin()" class="loginbtn">点击登陆</el-button>
           </el-form>
         </div>
     </div>
@@ -33,6 +35,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 export default {
   data () {
     var checkAge = (rule, value, callback) => {
@@ -80,10 +83,15 @@ export default {
         pass: [{ validator: validatePass, trigger: 'blur' }],
         checkPass: [{ validator: validatePass2, trigger: 'blur' }],
         age: [{ validator: checkAge, trigger: 'blur' }]
-      }
+      },
+      user: ''
     }
   },
+  computed: {
+    ...mapGetters(['islogin'])
+  },
   methods: {
+    ...mapActions(['login']),
     submitForm (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -96,6 +104,11 @@ export default {
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()
+    },
+    gologin () {
+      this.login(this.user)
+      console.log(this.islogin)
+      this.$router.push('/')
     }
   }
 }
@@ -118,7 +131,7 @@ export default {
     background: #f5f5f5;
     .login_form {
       width: 600px;
-      height: 600px;
+      height: 580px;
       background: #fff;
       position: absolute;
       top: 50%;
@@ -126,19 +139,15 @@ export default {
       margin-top: -300px;
       margin-left: -300px;
       padding: 30px;
-      padding-right: 100px;
       .row {
-        margin-bottom: 30px;
+        margin-bottom: 20px;
         overflow: hidden;
-      }
-      .el-form-item {
-        // margin-bottom: 50px;
-        margin-left: 0;
       }
       .loginbtn {
         width: 100%;
+        margin-top: 40px
       }
-      .yanzhengma {
+      .verification {
         float:right;
         width: 90%;
         height: 50px;

@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import ElementUI from 'element-ui'
+import store from './store'
 import './lib/scss/element-variables.sass'
 import 'lib-flexible/flexible.js'
 import router from './router'
@@ -15,6 +16,7 @@ new Vue({
   el: '#app',
   router,
   template: '<App/>',
+  store,
   components: { App },
   render: h => h(App)
 })
